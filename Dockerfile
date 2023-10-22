@@ -1,9 +1,12 @@
 # Etapa de compilación
 FROM maven:3.8.4-openjdk-17 AS build
 
-COPY ..
+WORKDIR /app
 
-RUN .mvn clean package
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package
 
 # Etapa de ejecución
 FROM openjdk:17-jdk-slim
@@ -12,7 +15,6 @@ EXPOSE 8090
 
 WORKDIR /app
 
-# Copia el archivo JAR desde la etapa de compilación
-COPY --from=build /build/target/app.jar app.jar
+COPY --from=build /app/target/app.jar /app/app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
