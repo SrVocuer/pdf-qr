@@ -15,6 +15,7 @@ EXPOSE 8090
 
 WORKDIR /app
 
-COPY --from=build /app/target/app.jar /app/app.jar
+# Copiamos el archivo JAR de la etapa de compilación
+COPY --from=build /app/target/app.jar .
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
