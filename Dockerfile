@@ -13,9 +13,9 @@ FROM openjdk:17-jdk-slim
 
 EXPOSE 8090
 
-WORKDIR /
+WORKDIR /target
 
-# Copiamos el archivo JAR de la etapa de compilación
-COPY --from=build target/app.jar .
+# Copia el archivo JAR desde la etapa de compilación
+COPY --from=build /target/app.jar ./target/app.jar
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "./target/app.jar"]
