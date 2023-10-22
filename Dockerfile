@@ -1,7 +1,8 @@
-# Etapa de compilación
-FROM maven:3.8.4-openjdk-17 AS build
+FROM ubuntu:latest AS build
 
-WORKDIR /app
+RUN apt-get update
+RUN apt-get install openjdk-17-jdk -y
+COPY . .
 
 COPY pom.xml .
 COPY src ./src
@@ -13,9 +14,9 @@ FROM openjdk:17-jdk-slim
 
 EXPOSE 8090
 
-WORKDIR /target
+WORKDIR /app
 
 # Copia el archivo JAR desde la etapa de compilación
-COPY --from=build /target/app.jar ./target/app.jar
+COPY --from=build /build/target/app.jar 
 
-ENTRYPOINT ["java", "-jar", "./target/app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
