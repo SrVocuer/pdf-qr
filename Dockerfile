@@ -3,18 +3,16 @@ FROM maven:3.8.4-openjdk-17 AS build
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY src ./src
+COPY . .
 
 RUN mvn clean package
 
-# Etapa de ejecución
+
 FROM openjdk:17-jdk-slim
 
-EXPOSE 8090
+EXPOSE 80
 
-WORKDIR /app
 
-COPY --from=build /app/target/app.jar /app/app.jar
+COPY --from=build target/app.jar /app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
