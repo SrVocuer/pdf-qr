@@ -13,6 +13,6 @@ FROM openjdk:17-jdk-slim
 EXPOSE 80
 
 
-COPY --from=build target/app.jar /app.jar
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","${JAVA_OPTS}","-jar","/app.jar"]
